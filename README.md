@@ -103,8 +103,92 @@ CombCalculator/
 ```
 
 ## 3. Running the Tool: Commands & Examples
-Provide instructions on how to run the tool, including example commands and their expected results. You can also give sample input and output for clarity.
 
+The `CombCalculator` project provides three Python scripts to perform the tasks detailed in the `CombCalculator` flowchart. Below are the commands for each script, their example usage, and details for each argument.
+
+### 3.1 `calculate_uniprot.py`
+
+This command is used for mapping either the full UniProt Database, either a random sample of 'n' proteins from UniProt or either a provided list of UniProt IDs. The different example commands for each case are provided below
+#### Example Commands
+1. **Full UniProt Mapping**
+```bash
+python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+--mode fetch_full \
+--output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
+--cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv
+```
+2. **UniProt Sample Mapping**
+```bash
+python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+--mode fetch_sample \
+--sample_size 20 \
+--output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
+--cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv 
+```
+3. **List of UIDs for Mapping**
+```bash
+python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+--mode map_existing \
+--input_file /dir/comb_calculator_MASTER/example_inputs/uid_list_TEST.csv \
+--output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
+--cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv
+```
+
+#### Positional Arguments
+
+| Position | Parameter       | Values                 | Description                                    |
+|----------|-----------------|------------------------|------------------------------------------------|
+| 1        | Mode (--mode)   | `fetch_full`, `fetch_sample` , `map_existing` | String value indicating if the mapping is to be done for the full version of UniProt, a sample of it or for a provided list (correspondigly)             |
+| 2        | Sample Size (--sample_size)   | Integers | Only for the `fetch_sample` mode. Indicates the desired sample of UniProt for mapping             |
+| 3        | Input File (--input_file)     | `input_file.csv`      | String value indicating the directory of the input dataset containing UIDs in a column named `uid` (see examples) |
+| 4        | Output File (--output_file)    | `output_file.csv`     | String value indicating the directory of the output dataset mapped for `sequence`, `refseq_id`, `disorder`|
+| 5        | Disorder File (--cached_disorder_file)   | `uniprot_mapped_disorder.csv`     | String value indicating the directory of the dataset with the instrinsic disorder values. Please use the one provided in the examples if you aren't sure about your disorder values|
+
+#### Inputs
+Make sure you use the example inputs that are located in the `example_inputs` folder.
+
+---
+
+### 3.2 Script 2: `script2.py`
+
+#### Example Command
+
+```bash
+python script2.py example_inputs/Dataset2 param1_value param2_value output_file2.csv
+```
+
+#### Positional Arguments
+
+| Position | Parameter       | Values                 | Description                                    |
+|----------|-----------------|------------------------|------------------------------------------------|
+| 1        | Input Dataset   | `example_inputs/Dataset2` | Path to the input dataset folder.             |
+| 2        | Parameter 1     | Custom value           | Specify the first parameter value (e.g., `0.5`). |
+| 3        | Parameter 2     | Custom value           | Specify the second parameter value (e.g., `True`). |
+| 4        | Output File     | `output_file2.csv`     | Name of the output file where results will be saved. |
+
+#### Inputs
+Make sure the required inputs are located in the `example_inputs/Dataset2` folder.
+
+---
+
+### 3.3 Script 3: `script3.py`
+
+#### Example Command
+
+```bash
+python script3.py example_inputs/Dataset3 config.json output_file3.csv
+```
+
+#### Positional Arguments
+
+| Position | Parameter       | Values                 | Description                                    |
+|----------|-----------------|------------------------|------------------------------------------------|
+| 1        | Input Dataset   | `example_inputs/Dataset3` | Path to the input dataset folder.             |
+| 2        | Config File     | `config.json`          | Path to a configuration JSON file.            |
+| 3        | Output File     | `output_file3.csv`     | Name of the output file where results will be saved. |
+
+#### Inputs
+Make sure the required inputs are located in the `example_inputs/Dataset3` folder, and provide the configuration file (`config.json`) in the same directory or specify the correct path.
 ## 4. Output: Mapping & Calculated Features
 Describe the format and contents of the output produced by the tool. You might include details about the mapped data, how the features are calculated, and any interpretation of the results.
 
