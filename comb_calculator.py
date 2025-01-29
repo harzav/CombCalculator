@@ -2,13 +2,13 @@
 
 """
 example of calling the script:
-python3.10 /dir/comb_calculator_MASTER/comb_calculator.py \
---input /dir/comb_calculator_MASTER/example_inputs/uniprot_mapped_disorder_TEST.csv \
+python3.10 /dir/CombCalculator/comb_calculator.py \
+--input /dir/CombCalculator/example_inputs/uniprot_mapped_disorder_TEST.csv \
 --output /dir/callable_output_TEST/ \
 --max_combinations 1000000 \
 --threads 4 \
 --batch_size 5 \
---additional /dir/comb_calculator_MASTER/example_inputs/combinationsTEST.csv
+--additional /dir/CombCalculator/example_inputs/combinationsTEST.csv
 
 """
 import argparse

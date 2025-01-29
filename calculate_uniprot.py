@@ -4,24 +4,24 @@
 
 examples of calling the script:
 1. FULL UNIPROT
-python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+python3.10 /dir/CombCalculator/calculate_uniprot.py \
 --mode fetch_full \
 --output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
---cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv
+--cached_disorder_file /dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv
 
 2. SAMPLE UNIPROT
-python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+python3.10 /dir/CombCalculator/calculate_uniprot.py \
 --mode fetch_sample \
 --sample_size 20 \
 --output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
---cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv 
+--cached_disorder_file /dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv 
 
 3. LIST OF UIDs FOR MAPPING
-python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+python3.10 /dir/CombCalculator/calculate_uniprot.py \
 --mode map_existing \
---input_file /dir/comb_calculator_MASTER/example_inputs/uid_list_TEST.csv \
+--input_file /dir/CombCalculator/example_inputs/uid_list_TEST.csv \
 --output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
---cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv
+--cached_disorder_file /dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv
 
 """
 import os

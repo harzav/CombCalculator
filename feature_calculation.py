@@ -2,8 +2,8 @@
 
 """
 example of calling the script:
-python3.10 /dir/comb_calculator_MASTER/feature_calculation.py \
-/dir/comb_calculator_MASTER/example_inputs/fc_TEST.csv \
+python3.10 /dir/CombCalculator/feature_calculation.py \
+/dir/CombCalculator/example_inputs/fc_TEST.csv \
 /dir/fc_OUTPUT/OUTPUT.csv \
 /dir/fc_OUTPUT/OUTPUT_RAW.csv 
 
