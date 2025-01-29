@@ -144,9 +144,6 @@ python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
 | 4        | Output File (--output_file)    | `output_file.csv`     | String value indicating the directory of the output dataset mapped for `sequence`, `refseq_id`, `disorder`|
 | 5        | Disorder File (--cached_disorder_file)   | `uniprot_mapped_disorder.csv`     | String value indicating the directory of the dataset with the instrinsic disorder values. Please use the one provided in the examples if you aren't sure about your disorder values|
 
-#### Inputs
-Make sure you use the example inputs that are located in the `example_inputs` folder.
-
 ---
 
 ### 3.2 Script 2: `script2.py`
