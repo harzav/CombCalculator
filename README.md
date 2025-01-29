@@ -112,80 +112,95 @@ This command is used for mapping either the full UniProt Database, either a rand
 #### Example Commands
 1. **Full UniProt Mapping**
 ```bash
-python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+python3.10 /dir/CombCalculator/calculate_uniprot.py \
 --mode fetch_full \
 --output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
---cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv
+--cached_disorder_file /dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv
 ```
 2. **UniProt Sample Mapping**
 ```bash
-python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+python3.10 /dir/CombCalculator/calculate_uniprot.py \
 --mode fetch_sample \
 --sample_size 20 \
 --output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
---cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv 
+--cached_disorder_file /dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv 
 ```
 3. **List of UIDs for Mapping**
 ```bash
-python3.10 /dir/comb_calculator_MASTER/calculate_uniprot.py \
+python3.10 /dir/CombCalculator/calculate_uniprot.py \
 --mode map_existing \
---input_file /dir/comb_calculator_MASTER/example_inputs/uid_list_TEST.csv \
+--input_file /dir/CombCalculator/example_inputs/uid_list_TEST.csv \
 --output_file /dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv \
---cached_disorder_file /dir/comb_calculator_MASTER/Datasets/uniprot_mapped_disorder.csv
+--cached_disorder_file /dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv
 ```
 
 #### Positional Arguments
 
 | Position | Parameter       | Values                 | Description                                    |
 |----------|-----------------|------------------------|------------------------------------------------|
+| 0        | Script directory    | `/dir/CombCalculator/calculate_uniprot.py`     | String value indicating the script directory. Remove `/dir` if it is saved in your home directory|
 | 1        | Mode (--mode)   | `fetch_full`, `fetch_sample` , `map_existing` | String value indicating if the mapping is to be done for the full version of UniProt, a sample of it or for a provided list (correspondigly)             |
-| 2        | Sample Size (--sample_size)   | Integers | Only for the `fetch_sample` mode. Indicates the desired sample of UniProt for mapping             |
-| 3        | Input File (--input_file)     | `input_file.csv`      | String value indicating the directory of the input dataset containing UIDs in a column named `uid` (see examples) |
-| 4        | Output File (--output_file)    | `output_file.csv`     | String value indicating the directory of the output dataset mapped for `sequence`, `refseq_id`, `disorder`|
-| 5        | Disorder File (--cached_disorder_file)   | `uniprot_mapped_disorder.csv`     | String value indicating the directory of the dataset with the instrinsic disorder values. Please use the one provided in the examples if you aren't sure about your disorder values|
+| 2        | Sample Size (--sample_size)   | Integer, n ∈ ℕ ∩ [2, +∞] | Only for the `fetch_sample` mode. Indicates the desired sample of UniProt for mapping             |
+| 3        | Input File (--input_file)     | `/dir/CombCalculator/example_inputs/uid_list_TEST.csv`      | String value indicating the directory of the input dataset containing UIDs in a column named `uid` (see examples) |
+| 4        | Output File (--output_file)    | `/dir/mapping_OUTPUT/uniprot_mapped_disorder_TEST.csv`     | String value indicating the directory of the output dataset mapped for `sequence`, `refseq_id`, `disorder`|
+| 5        | Disorder File (--cached_disorder_file)   | `/dir/CombCalculator/Datasets/uniprot_mapped_disorder.csv`     | String value indicating the directory of the dataset with the instrinsic disorder values. Please use the one provided in the `CombCalculator/Datasets` directory if you aren't sure about your disorder values|
 
 ---
 
-### 3.2 Script 2: `script2.py`
+### 3.2 `comb_calculator.py`
+
+The main function. Receives a list of mapped UniProt IDs (according to the mapping detailed in the flowchart, `Section 4. Output: Mapping & Calculated Features` and the `calculate_uniprot.py` function) and then calculates all their possible combinations of PPIs and a set of descriptive features for them (also see `Section 4. Output: Mapping & Calculated Features` for their description)
+#### Example Command
+
+```bash
+python3.10 /dir/CombCalculator/comb_calculator.py \
+--input /dir/CombCalculator/example_inputs/uniprot_mapped_disorder_TEST.csv \
+--output /dir/callable_output_TEST/ \
+--max_combinations 1000000 \
+--threads 4 \
+--batch_size 5 \
+--additional /dir/CombCalculator/example_inputs/combinationsTEST.csv
+```
+
+#### Positional Arguments
+
+| Position | Parameter       | Values              | Description                                             |
+|----------|-----------------|---------------------|---------------------------------------------------------|
+| 0        | Script directory    | `/dir/CombCalculator/comb_calculator.py`     | String value indicating the script directory. Remove `/dir` if it is saved in your home directory|
+| 1        | Input Dataset (--input)   | `/dir/CombCalculator/example_inputs/uniprot_mapped_disorder_TEST.csv` | String value indicating the directory of the input dataset containing UIDs in a column named `uid`, and mapped for  `sequence`, `refseq_id`, `disorder` (see examples)          |
+| 2        | Output Directory (--output)     | `/dir/callable_output_TEST/`           | String value indicating the output directory, where all the datasets will be saved, containing all the possible PPIs that the input UIDs can create, along with 68 descriptive features (see `Section 4. Output: Mapping & Calculated Features` for their description)|
+| 3        | Max. number of combinations (--max_combinations)     | Integer, n ∈ ℕ ∩ [2, +∞] | The maximum number of combinations you want to create. You *should* set a number safely above the maximum possible PPI combinations if you want all of them calculated.  |
+| 4        | Threads for parallel processing (--threads)    | Integer, n ∈ ℕ ∩ [1, maximum computational resources]     | The number of threads you want to allocate for processing the PPI features for each combinations batch. Depends on your computational resources. |
+| 5        | Batch size of PPIs for parallel processing (--threads)    | Integer, n ∈ ℕ ∩ [1, +∞]     | The number of PPIs per processing batch. Should be similar to `--threads` for efficiency. Depends on your computational resources. |
+| 6        | Additional dataset directory (--additional)    | `/dir/CombCalculator/example_inputs/combinationsTEST.csv`     | String value indicating the directory of an additional dataset in which you already have calculated PPIs (they will be excluded from the calculation). You can always use the dataset provided: `example_inputs/combinationsTEST.csv`, which has already calculated PPIs and in which you can add more, newly calculated PPIs (*keeping always the same structure!!*) |
+
+---
+
+### 3.3 `feature_calculation.py`
 
 #### Example Command
 
 ```bash
-python script2.py example_inputs/Dataset2 param1_value param2_value output_file2.csv
+python3.10 /dir/CombCalculator/feature_calculation.py \
+/dir/CombCalculator/example_inputs/fc_TEST.csv \
+/dir/fc_OUTPUT/OUTPUT.csv \
+/dir/fc_OUTPUT/OUTPUT_RAW.csv 
 ```
 
 #### Positional Arguments
 
 | Position | Parameter       | Values                 | Description                                    |
 |----------|-----------------|------------------------|------------------------------------------------|
-| 1        | Input Dataset   | `example_inputs/Dataset2` | Path to the input dataset folder.             |
-| 2        | Parameter 1     | Custom value           | Specify the first parameter value (e.g., `0.5`). |
-| 3        | Parameter 2     | Custom value           | Specify the second parameter value (e.g., `True`). |
-| 4        | Output File     | `output_file2.csv`     | Name of the output file where results will be saved. |
-
-#### Inputs
-Make sure the required inputs are located in the `example_inputs/Dataset2` folder.
+| 0        | Script directory    | `/dir/CombCalculator/feature_calculation.py`     | String value indicating the script directory. Remove `/dir` if it is saved in your home directory|
+| 1        | Input Dataset   | `/dir/CombCalculator/example_inputs/fc_TEST.csv` | String value indicating the directory of the input dataset containing PPIs in two columns named `uidA`, `uidB` |
+| 2        | Output File     | `/dir/fc_OUTPUT/OUTPUT.csv`           | String value indicating the directory of the output dataset, with all the possible mapping and features calculated for the PPIs that were provided (see `Section 4. Output: Mapping & Calculated Features` for their description). *Note*: This dataset is scaled using Arithmetic Sample-Wise normalization and imputated using KNN imputation method. If this is not wanted, use `Raw Output File` instead. |
+| 3        | Raw Output File | `/dir/fc_OUTPUT/OUTPUT_RAW.csv`           | String value indicating the directory of the output dataset, with without the preprocessing methods applied. |
 
 ---
 
-### 3.3 Script 3: `script3.py`
-
-#### Example Command
-
-```bash
-python script3.py example_inputs/Dataset3 config.json output_file3.csv
-```
-
-#### Positional Arguments
-
-| Position | Parameter       | Values                 | Description                                    |
-|----------|-----------------|------------------------|------------------------------------------------|
-| 1        | Input Dataset   | `example_inputs/Dataset3` | Path to the input dataset folder.             |
-| 2        | Config File     | `config.json`          | Path to a configuration JSON file.            |
-| 3        | Output File     | `output_file3.csv`     | Name of the output file where results will be saved. |
-
 #### Inputs
-Make sure the required inputs are located in the `example_inputs/Dataset3` folder, and provide the configuration file (`config.json`) in the same directory or specify the correct path.
+For a test drive, make sure you use the appropriate inputs that are located in the `CombCalculator/example_inputs/` folder. All the directories in the example commands use a `/dir` prefix in the beginning.  Remove it if `CombCalculator` is  saved in your home directory.
+
 ## 4. Output: Mapping & Calculated Features
 Describe the format and contents of the output produced by the tool. You might include details about the mapped data, how the features are calculated, and any interpretation of the results.
 
