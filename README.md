@@ -9,6 +9,7 @@ The tool consists of 3 bash commands that cover different mapping and combinatio
 For understanding which tool to use according to your input and needs please follow carefully the following flowchart!
 
 <h2>A. CombCalculator Flowchart</h2>
+![Comb (1)](https://github.com/user-attachments/assets/62b8f9e6-cff8-48a0-b657-c9bb4364ef81)
 
 ## <h2>B. Table of Contents - Tutorial for Setting Up and Running the Tool</h2>
 
@@ -17,8 +18,10 @@ For understanding which tool to use according to your input and needs please fol
 - [3. Running the Tool: Commands & Examples](#3-running-the-tool-commands--examples)
 - [4. Output: Mapping & Calculated Features](#4-output-mapping--calculated-features)
 - [5. Acknowledgments](#5-acknowledgments)
+- [6. Citations](#6-citations)
 
 ## 1. Requirements
+
 To run this tool, you'll need the following:
 
 ### 1.1 Python Version
@@ -203,15 +206,25 @@ python3.10 /dir/CombCalculator/feature_calculation.py \
 
 #### Inputs
 For a test drive, make sure you use the appropriate inputs that are located in the `CombCalculator/example_inputs/` folder. All the directories in the example commands use a `/dir` prefix in the beginning.  Remove it if `CombCalculator` is  saved in your home directory.
-Please be aware of the different input formats for each of the 3 scripts and make sure you keep the same feature names for the mandatory rows. To use `comb_calculator.py` tool the exact mapping mentioned is necessary. It is best if you use the `calculate_uniprot.py` function in case you have a list of UIDs, to ensure proper mapping.Below are some screenshots of input examples for each tool:
+Please be aware of the different input formats for each of the 3 scripts and make sure you keep the same feature names for the mandatory rows. To use `comb_calculator.py` tool the exact mapping mentioned is necessary. It is best if you use the `calculate_uniprot.py` function in case you have a list of UIDs, to ensure proper mapping. 
+
+Below are some screenshots of input examples for each tool:
 
 1. `calculate_uniprot.py`
+
+![calc_uniprot](https://github.com/user-attachments/assets/14eac732-a4ee-4ac4-9012-05a37f7446e4)
+
 2. `comb_calculator.py`
+
+![comb_calculator](https://github.com/user-attachments/assets/32ee6e38-5769-426e-8359-36d62d6cfae9)
+
 3. `feature_calculation.py`
+
+![feature_calc](https://github.com/user-attachments/assets/e716222a-1f16-471c-9636-fd42a5391334)
 
 ## 4. Output: Mapping & Calculated Features
 
-The output of each command is either a mapped list of UIDs (in the case of `calculate_uniprot.py`) or a set of 68 calculated features for a protein interacting pair (in the case of `comb_calculator.py` and `feature_calculation.py`)
+The output of each command is either a mapped list of UIDs (in the case of `calculate_uniprot.py`) or a set of 68 calculated features for a protein interacting pair (in the case of `comb_calculator.py` and `feature_calculation.py`). In the case of the PPI datasets, the mapping features are calculated for both proteins in the PPI (with suffixes `_A`, and `_B`) 
 The features for each case will be explained below.
 
 ### 4.1 Mapping Features
@@ -221,16 +234,60 @@ The features for each case will be explained below.
 | `uid`    | String    | The UniProt ID (UID) of the protein|
 | `refseq_id`   | String | The NCBI Reference Sequence (RefSeq) database ID of each protein |
 | `seq`     | String           | The protein sequence |
-| `disorder` | Float, n ∈ ℝ ∩ [0, 1]           | The intrinsic disorder value for the protein. It is predicted using the DisPredict 3.0 Tool <sup>2</sup> for the whole UniProt Database. For new entries in the UniProt Database (beyond Sep. 2024) it is predicted using the IUPred2A Tool  <sup>3</sup>|
+| `disorder` | Float, n ∈ ℝ ∩ [0, 1]           | The Intrinsic Disorder value for the protein. It is predicted using the [DisPredict 3.0 Tool](https://doi.org/10.1016/j.amc.2024.128630) <sup>[2]</sup> for the whole UniProt Database. For new entries in the UniProt Database (beyond Sep. 2024) it is predicted using the [IUPred2A Tool](https://doi.org/10.1093/nar/gky384)<sup>[3]</sup>|
+
+---
+
+### 4.2 Calculated Features
+
+| Feature Role | Number of Columns | Column Names | Description | Values |
+|---------|------------------|--------------|-------------|--------|
+| **PPI's Disorder Prediction** | 1 | `disorder_check` | Indicates if the Intrinsic Disorder of the pair is above average, in which case features can't be calculated. If one of the two proteins in the PP has an Intrinsic Disorder >0.5, then the pair is considered Disordered (`1`), else not (`0`)   | 0, 1 |
+| **GO term similarity** | 3 | `BP_similarity`, `MF_similarity`, `CC_similarity` | The similarity of the proteins in the pair based on the similarity of their respective GO terms. Range is from 0-1, where `0` is non-similarity, `1` is total similarity and  | Float, n ∈ ℝ ∩ [0, 1] , NaN |
+| **Existence of a Homologous Interacting Pair in other organisms** | 4 | `Homologous in Mouse`, `Homologous in Drosophila`, `Homologous in Yeast`, `Homologous in Ecoli` | Existence of corresponding homologous PPIs in Mouse, Yeast, Drosophila, E. coli. If a homologous pair exists, it is calculated whether this pair is also an interacting pair, and if it is, `1` is appended in this column, else `0` is appended. `NaN` values are appended to the interacting pairs with no homology between Human and each other examined organism. The PPI Datasets of other organisms are derived from the DIP database, while the mapping of homologous proteins was done via the NCBI- HomoloGene Dataset. | 0, 1, NaN |
+| **Existence of the PPI in other Databases** | 4 | `Exists in DIP?`, `Exists in APID?`, `Exists in BIOGRID?`, `Exists in MINT?` | Existence of PPI in APID, DIP, BIOGRID, and MINT databases. `0` if it doesn't exist, `1` if it exists | 0, 1 |
+| **Sequence Similarity** | 1 | `Sequence_similarity` | Sequence SImilarity E-value of the sequences of the proteins in each PPI. Lower (i.e., stronger) E-values indicate more “significant” alignments, suggesting a higher probability that the sequences share a common evolutionary origin. Higher (i.e., weaker) E-value indicates that the alignment might be a random event. | Float, n ∈ ℝ ∩ [-∞, +∞] |
+| **Domain Interactions** | 1 | `pfam_interaction` | Presence of known domain interactions between the proteins in each PPI pair based on the Pfam Database. `0` if a domain interaction doesn't exist, `1` if it exists, and `NaN` if there is no info on the DB. | 0, 1, NaN |
+| **Existence in iRefIndex** | 1 | `irefindex_check` | Presence of the PPI in [iRefIndex](https://doi.org/10.1186/1471-2105-9-405)<sup>[4]</sup> Database. Specifically it checks if the PPI is a unique, binary, human and experimentally verified PPI in iRefIndex. `0` if it isn't, `1` if it is.  | 0, 1 |
+| **iRefIndex Method of Identification** | 1 | `irefindex_method` | The experimental method of identification in iRefIndex. For more info on these methods check [iRefIndex MITAB Documentation](https://irefindex.vib.be/wiki/index.php/README_MITAB2.6_for_iRefIndex_19.0#Column_number:_7_.28Method.29)<sup>[5]</sup>. Applies if `1` is appended in `irefindex_check` column. Example: `two hybrid prey pooling approach` | String, NaN |
+| **iRefIndex PPI Detection Citation** | 1 | `irefindex_pmid` | The PMID of the paper for the experimental PPI identification. Example: `pubmed:23275563`| String, NaN |
+| **Subcellular co-localization** | 1 | `Subcellular Co-localization?` | Subcellular co-localization of the two proteins in the pair in eukaryotic cells.  `0` if a co-localization doesn't exist, `1` if it exists, and `NaN` if there is no info. | 0, 1, NaN |
+| **Gene expression profile similarity** | 15 | `0`, `1` , ...., `14` | The Spearman Index of the similarity of the two proteins in terms of their Gene Expression among fifteen NCBI GEO gene expression datasets | Float, n ∈ ℝ ∩ [-1, 1] |
+| **Amino acid difference** | 20 | `A%`, ...., `G %` | The absolute difference in the percentage of every amino acid between the PP | Float, n ∈ ℝ ∩ [0, 1] |
+| **Molecular weight difference** | 1 | `MW dif` | The absolute difference in molecular weight between PP | Float, n ∈ ℝ ∩ [0, +∞] |
+| **Aromaticity index difference** | 1 | `Aromaticity dif` | The absolute difference in aromaticity index difference between PP. | Float, n ∈ ℝ ∩ [0, 1] |
+| **Instability index difference** | 1 | `Instability dif` | The absolute difference in instability index between PP | Float, n ∈ ℝ ∩ [0, 100] |
+| **Amino acid fraction difference** | 3 | `helix_fraction_dif`, `turn_fraction_dif`, `sheet_fraction_dif` | The difference in fraction of total amino acids that are contained in 3 areas: The fraction of aa in helix, the fraction of aa in turn, the fraction of aa in sheet | Float, n ∈ ℝ ∩ [0, 1] |
+| **Molar extinction coefficient difference** | 2 | `cys_reduced_dif`, `cys_residues_dif` | The difference in molar extinction coefficient when: (a) The molar extinction coefficient is calculated assuming cysteines(reduced) and (b) The molar extinction coefficient is calculated assuming cystines residues (Cys-Cys-bond) | Integer, n ∈ ℕ ∩ [0, +∞] |
+| **GRAVY (Grand Average of Hydropathy) difference** | 1 | `gravy_dif` | The absolute difference in GRAVY index between PP | Float, n ∈ ℝ ∩ [0, +∞]  |
+| **pH charge difference** | 1 | `ph7_charge_dif` | The absolute difference in the protein charge when pH= 7 | Float, n ∈ ℝ ∩ [0, +∞]  |
+| **RNA expression profile similarity** | 2 | `GSE227375_spearman`, `GSE228702_spearman` | The Spearman Index of the similarity between each protein in the pair, in terms of their RNA expression profiles (NCBI GEO GSE227375 and GSE228702 datasets) | Float, n ∈ ℝ ∩ [-1, 1] |
+| **Classifier Prediction** | 1 | `class_value` | The predicted class of the PPI. It is calculated using an [Evolutionary Optimization Algorithm](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup> , along with SVM and RF classifiers| 0, 1  |
+| **Classifier Confidence** | 1 | `classifier_confidence` | The confidence of the Classification Algorithm in its prediction | Float, n ∈ ℝ ∩ [0, 1]  |
+| **Interaction Affinity Estimation** | 1 | `regression_value` | The estimation of the interaction's Affinity. It is calculated using an [Evolutionary Optimization Algorithm](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>, along with SVR, RBF-SVR, RFR, and CNN regressors | Float, n ∈ ℝ ∩ [0, 1]  |
+
+---
+
+**Notes**
+- "PP" refers to the "Protein Pair" in each PPI
+- "NaN" indicates missing or unavailable values.
+- Spearman index measures correlation between values, ranging from -1 to 1.
+- For more info on how the Classifier and the Interaction Affinity Estimation models were created please check the [TR_PPI GitHub](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>.
 
 ## 5. Acknowledgments
-Give credit to any contributors, libraries, or other resources that helped in the creation of the tool. You can also mention any external resources or research papers used in your project.
 
-## Citations
+This Tool and Project is directly linked to the [TR_PPI Project](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>, and therefore is considered part of the VIRTUOUS project (https://www.virtuoush2020.com/), funded by the European Union’s Horizon 2020 research and innovation program under the Marie Sklodowska-Curie-RISE (Grant Agreement No 872181). The tool cannot be copied and distributed without the direct approval of the VIRTUOUS consortium members and [InSyBio PC](https://insybio.com/)<sup>[6]</sup>. Contact InSyBio PC or this GitHub's authors for more info.
 
-1) https://github.com/harzav/TR_PPI_project
+## 6. Citations
+
+1) TR_PPI Project GitHub: https://github.com/harzav/TR_PPI_project
 
 2) Kabir, M. W. U., & Hoque, M. T. (2024). DisPredict3.0: Prediction of intrinsically disordered regions/proteins using protein language model. Applied Mathematics and Computation, 472, 128630. https://doi.org/10.1016/j.amc.2024.128630
 
-3) Bálint Mészáros, Gábor Erdős, Zsuzsanna Dosztányi (2018), IUPred2A: context-dependent prediction of protein disorder as a function of redox state and protein binding, Nucleic Acids Research ;46(W1):W329-W337.
+3) Mészáros B, Erdos G, Dosztányi Z. (2018). IUPred2A: context-dependent prediction of protein disorder as a function of redox state and protein binding. Nucleic Acids Res. Jul 2;46(W1):W329-W337. https://doi.org/10.1093/nar/gky384. 
 
+4) Razick, S., Magklaras, G., Donaldson, I. M. (2008). iRefIndex: A Consolidated Protein Interaction Database with Provenance. BMC Bioinformatics. 9 (1), 405. https://doi.org/10.1186/1471-2105-9-405.
+
+5) iRefIndex Documentation Link: https://irefindex.vib.be/wiki/index.php/README_MITAB2.6_for_iRefIndex_19.0#Column_number:_7_.28Method.29
+
+6) For contacting InSyBio: https://insybio.com/ or [info@insybio.com](https://info@insybio.com)
