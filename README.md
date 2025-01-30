@@ -9,7 +9,8 @@ The tool consists of 3 bash commands that cover different mapping and combinatio
 For understanding which tool to use according to your input and needs please follow carefully the following flowchart!
 
 <h2>A. CombCalculator Flowchart</h2>
-![Comb (1)](https://github.com/user-attachments/assets/62b8f9e6-cff8-48a0-b657-c9bb4364ef81)
+
+<img src="https://github.com/user-attachments/assets/62b8f9e6-cff8-48a0-b657-c9bb4364ef81" width="1000">
 
 ## <h2>B. Table of Contents - Tutorial for Setting Up and Running the Tool</h2>
 
@@ -277,6 +278,10 @@ The features for each case will be explained below.
 ## 5. Acknowledgments
 
 This Tool and Project is directly linked to the [TR_PPI Project](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>, and therefore is considered part of the VIRTUOUS project (https://www.virtuoush2020.com/), funded by the European Union’s Horizon 2020 research and innovation program under the Marie Sklodowska-Curie-RISE (Grant Agreement No 872181). The tool cannot be copied and distributed without the direct approval of the VIRTUOUS consortium members and [InSyBio PC](https://insybio.com/)<sup>[6]</sup>. Contact InSyBio PC or this GitHub's authors for more info.
+
+![image](https://github.com/user-attachments/assets/00ee01f1-4ff0-4ae9-ba58-676fe18eff09)  ![image](https://github.com/user-attachments/assets/ae4117a9-404d-49c2-8b16-ddcc531d734c)
+
+
 
 ## 6. Citations
 
