@@ -45,6 +45,7 @@ If you're running any other version or distribution, there might be compatibilit
 
 ## 2. Setup
 ### 2.1 Installing Dependencies
+
 The required libraries are listed in the <code>requirements.txt</code> file located in the root of this repository. To install these dependencies, follow these steps:
 
 1. **Clone the repository:**
@@ -155,7 +156,8 @@ python3.10 /dir/CombCalculator/calculate_uniprot.py \
 
 The main function. Receives a list of mapped UniProt IDs (according to the mapping detailed in the flowchart, `Section 4. Output: Mapping & Calculated Features` and the `calculate_uniprot.py` function) and then calculates all their possible combinations of PPIs and a set of descriptive features for them (also see `Section 4. Output: Mapping & Calculated Features` for their description)
 
-**Important!!** To use this tool the exact mapping mentioned is necessary. It is best if you use the `calculate_uniprot.py` function in case you have a list of UIDs, to ensure proper mapping.
+>[!WARNING] 
+>To use this tool the exact mapping mentioned is necessary. It is best if you use the `calculate_uniprot.py` function in case you have a list of UIDs, to ensure proper mapping.
 
 #### Example Command
 
@@ -230,6 +232,7 @@ And the Positional arguments are the following:
 ---
 
 #### Inputs
+
 For a test drive, make sure you use the appropriate inputs that are located in the `CombCalculator/example_inputs/` folder. All the directories in the example commands use a `/dir` prefix in the beginning.  Remove it if `CombCalculator` is  saved in your home directory.
 Please be aware of the different input formats for each of the 3 scripts and make sure you keep the same feature names for the mandatory rows. To use `comb_calculator.py` tool the exact mapping mentioned is necessary. It is best if you use the `calculate_uniprot.py` function in case you have a list of UIDs, to ensure proper mapping. 
 
@@ -293,19 +296,17 @@ The features for each case will be explained below.
 
 ---
 
-**Notes**
-- "PP" refers to the "Protein Pair" in each PPI
-- "NaN" indicates missing or unavailable values.
-- Spearman index measures correlation between values, ranging from -1 to 1.
-- For more info on how the Classifier and the Interaction Affinity Estimation models were created please check the [TR_PPI GitHub](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>.
+>[!NOTE]
+>- "PP" refers to the "Protein Pair" in each PPI
+>- "NaN" indicates missing or unavailable values.
+>- Spearman index measures correlation between values, ranging from -1 to 1.
+>- For more info on how the Classifier and the Interaction Affinity Estimation models were created please check the [TR_PPI GitHub](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>.
 
 ## 5. Acknowledgments
 
 This Tool and Project is directly linked to the [TR_PPI Project](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>, and therefore is considered part of the VIRTUOUS project (https://www.virtuoush2020.com/), funded by the European Union’s Horizon 2020 research and innovation program under the Marie Sklodowska-Curie-RISE (Grant Agreement No 872181). The tool cannot be copied and distributed without the direct approval of the VIRTUOUS consortium members and [InSyBio PC](https://insybio.com/)<sup>[6]</sup>. Contact InSyBio PC or this GitHub's authors for more info.
 
-![image](https://github.com/user-attachments/assets/00ee01f1-4ff0-4ae9-ba58-676fe18eff09)  ![image](https://github.com/user-attachments/assets/ae4117a9-404d-49c2-8b16-ddcc531d734c)
-
-
+![image](https://github.com/user-attachments/assets/00ee01f1-4ff0-4ae9-ba58-676fe18eff09)![image2](insybio.png) 
 
 ## 6. Citations
 
