@@ -96,9 +96,9 @@ If your CombCalculator is located in your <code>home</code> directory under <cod
 ```bash
 mv ~/Downloads/Datasets ~/CombCalculator
 ```
-**Important!!!**
-Make sure the file name and location match the tool's expected setup.
-Your directory structure should look like this:
+>[!IMPORTANT] 
+> Make sure the file name and location match the tool's expected setup.
+> Your directory structure should look like this:
 ```scss
 CombCalculator/
 ├── requirements.txt
