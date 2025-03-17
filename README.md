@@ -306,7 +306,8 @@ The features for each case will be explained below.
 
 This Tool and Project is directly linked to the [TR_PPI Project](https://github.com/harzav/TR_PPI_project)<sup>[1]</sup>, and therefore is considered part of the VIRTUOUS project (https://www.virtuoush2020.com/), funded by the European Union’s Horizon 2020 research and innovation program under the Marie Sklodowska-Curie-RISE (Grant Agreement No 872181). The tool cannot be copied and distributed without the direct approval of the VIRTUOUS consortium members and [InSyBio PC](https://insybio.com/)<sup>[6]</sup>. Contact InSyBio PC or this GitHub's authors for more info.
 
-![image](https://github.com/user-attachments/assets/00ee01f1-4ff0-4ae9-ba58-676fe18eff09)![image2](insybio.png) 
+<img src="https://github.com/user-attachments/assets/00ee01f1-4ff0-4ae9-ba58-676fe18eff09" width="297" height="87">
+<img src="https://github.com/user-attachments/assets/ae4117a9-404d-49c2-8b16-ddcc531d734c" width="297" height="87">
 
 ## 6. Citations
 
