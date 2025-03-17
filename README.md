@@ -203,6 +203,30 @@ python3.10 /dir/CombCalculator/feature_calculation.py \
 | 2        | Output File     | `/dir/fc_OUTPUT/OUTPUT.csv`           | String value indicating the directory of the output dataset, with all the possible mapping and features calculated for the PPIs that were provided (see `Section 4. Output: Mapping & Calculated Features` for their description). *Note*: This dataset is scaled using Arithmetic Sample-Wise normalization and imputated using KNN imputation method. If this is not wanted, use `Raw Output File` instead. |
 | 3        | Raw Output File | `/dir/fc_OUTPUT/OUTPUT_RAW.csv`           | String value indicating the directory of the output dataset, with without the preprocessing methods applied. |
 
+#### Feature Calculation Multiprocessing
+
+For calculating features for a large number of PPIs (e.g. > 10k) it is best to use the **multiprocessing** version of Feature Calculation function named `feature_calculation_multiprocessing.py`. This function achieves the same results with the default function, but processes the PPIs in batches of size *N* set by the user, utilizing a number of cores for parallel processing of the batches, which is manually set based by your systems capabilities.
+
+The example command of calling the script is:
+
+```bash
+python3.10 /dir/CombCalculator/feature_calculation_multiprocessing.py \
+--input_csv /dir/CombCalculator/example_inputs/fc_TEST.csv \
+--batch_size 10 \
+--num_threads 4 \
+--output_dir /dir/fc__multi_OUTPUT
+```
+
+And the Positional arguments are the following:
+
+| Position | Parameter       | Values                 | Description                                    |
+|----------|-----------------|------------------------|------------------------------------------------|
+| 0        | Script directory    | `/dir/CombCalculator/feature_calculation_multiprocessing.py`     | String value indicating the script directory. Remove `/dir` if it is saved in your home directory|
+| 1        | Input Dataset (--input_csv)  | `/dir/CombCalculator/example_inputs/fc_TEST.csv` | String value indicating the directory of the input dataset containing PPIs in two columns named `uidA`, `uidB` |
+| 2        | Batch Size (--batch_size) |  Integer, n ∈ ℕ ∩ [10, +∞] | The number of PPIs per batch. Minimum is recommended to be 10 for efficient feature calculation. Maximum is based on your systems capabilities and teh total number of PPIs in your input dataset. |
+| 3        | Threads for parallel processing (--num_threads)    | Integer, n ∈ ℕ ∩ [4, maximum computational resources]     | The number of threads you want to allocate for processing the PPI features for each combinations batch. Depends on your computational resources. Minumum is set to be 4- less than 4 is inefficient for parallel feature calculation|
+| 4        | Output File (--output_dir)    | `/dir/fc__multi_OUTPUT`           | String value indicating the directory of the output folder. There all the batches and final output CSVs (`/OUTPUT.csv` & `OUTPUT_RAW.csv`) will be saved  |
+
 ---
 
 #### Inputs
